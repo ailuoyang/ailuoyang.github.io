@@ -1,1 +1,97 @@
-this a new file
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>canvas的测试</title>
+	<style type="text/css">
+		html,body{margin: 0px;padding: 0px;}
+	</style>
+</head>
+<body>
+	<canvas id="mycanvas" width="600px;" height="600px" style="border: 1px solid #000;display:block;background-color: #444;"></canvas>
+</body>
+<script type="text/javascript">
+	var canvas=document.getElementById('mycanvas');
+	canvas.width=window.innerWidth;
+	canvas.height=window.innerHeight;
+	var ctx=canvas.getContext("2d");
+/*	ctx.arc(250,250,50,0,Math.PI*2,true);
+	ctx.fill();*/
+	var arcs=new Array();
+	var shape=function(){
+		this.x=Math.floor(Math.random()*400)+100;
+		this.y=Math.floor(Math.random()*400)+100;
+		this.r=Math.floor(Math.random()*3)+10;
+		this.toX=Math.floor(Math.random())*2-1;
+		this.toY=Math.floor(Math.random())*2-1;
+		this.isOutX=1;
+		this.isOutY=1;
+		this.v=1;
+		oriX=Math.random()*2-1;//表示沿着X向右移动
+		oriY=Math.random()*2-1;//表示沿着Y向下移动
+		if(oriX<=0){this.oriX=-1;}else{this.oriX=1;}
+		if(oriY<=0){this.oriY=-1;}else{this.oriY=1;}
+		//this._PI=Math.random()*2*Math.PI;
+	};
+	for(var i=0;i<20;i++){
+		//console.log(new shape());
+		arcs.push(new shape());
+	}
+
+	for (var i = 0; i < arcs.length; i++) {
+		ctx.beginPath();
+		var arc=arcs[i];
+		ctx.arc(arc.x,arc.y,arc.r,0,Math.PI*2,true);
+		ctx.fillStyle="#eee";
+		ctx.fill();
+		ctx.closePath();
+	}
+	animate();
+
+	window.onresize=function(){
+		canvas.width=window.innerWidth;
+		canvas.height=window.innerHeight;
+	}
+
+	function animate(){
+		canvas.width=canvas.width;
+		for (var i = 0; i < arcs.length; i++) {
+			//var distantX=arc.x-arc.r;
+			//var distantY=arc.y+arc.r;
+			var arc=arcs[i];
+			if((arc.x-arc.r)<=0){
+				arc.oriX=1;
+			}
+			if((arc.x+arc.r)>=canvas.width){
+				arc.oriX=-1;
+			}
+			if((arc.y-arc.r)<=0){
+				arc.oriY=1;
+			}
+			if((arc.y+arc.r)>=canvas.height){
+				arc.oriY=-1;
+			}
+			arc.x+=(Math.random()*arc.v*arc.oriX);
+			arc.y+=(Math.random()*arc.v*arc.oriY);
+			arcs[i]=arc;
+		}
+
+		for (var i = 0; i < arcs.length; i++) {
+		ctx.beginPath();
+		var arc=arcs[i];
+		ctx.arc(arc.x,arc.y,arc.r,0,Math.PI*2,true);
+		ctx.fillStyle="#eee";
+		ctx.fill();
+		ctx.closePath();
+	}
+
+		setTimeout(animate,0);
+	}
+
+	/*for (var i = 0; i < arcs.length; i++) {
+		console.log(arcs[i]);
+	}*/
+
+
+</script>
+</html>
